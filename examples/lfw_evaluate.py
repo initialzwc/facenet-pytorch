@@ -200,7 +200,7 @@ def calculate_roc(thresholds, embeddings1, embeddings2, actual_issame, nrof_fold
             _, _, acc_train[threshold_idx], _ ,_ = calculate_accuracy(threshold, dist[train_set], actual_issame[train_set]) # use train set to get best threshold
         best_threshold_index = np.argmax(acc_train)
         for threshold_idx, threshold in enumerate(thresholds):
-            tprs[fold_idx,threshold_idx], fprs[fold_idx,threshold_idx], _, _, _ = calculate_accuracy(threshold, dist[test_set], actual_issame[test_set]) # use train set to evaluate performance
+            tprs[fold_idx,threshold_idx], fprs[fold_idx,threshold_idx], _, _, _ = calculate_accuracy(threshold, dist[test_set], actual_issame[test_set]) # use test set to evaluate performance
         _, _, accuracy[fold_idx], is_fp, is_fn = calculate_accuracy(thresholds[best_threshold_index], dist[test_set], actual_issame[test_set])
 
         tpr = np.mean(tprs,0) # for each fold, return the average tpr cross all folds for each threshold
@@ -252,11 +252,7 @@ def calculate_val(thresholds, embeddings1, embeddings2, actual_issame, far_targe
             # plt.ion()
             # plt.plot(far_train,thresholds)
             # plt.show()
-            #####################################################################################################################################################################
-            # added by Wencong to avoid erros when applying interp1d directly on data with duplicated data, as interp1d only applicable to strictly increasing or decreasing data
-            unique_far_train, indices = np.unique(far_train, return_index=True)
-            unique_thresholds = thresholds[indices]
-            f = interpolate.interp1d(unique_far_train, unique_thresholds, kind='slinear')
+ 
             #####################################################################################################################################################################
             #####################################################################################################################################################################
 
